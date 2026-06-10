@@ -1,1 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Upgrade Successful</title>
+    <style>
+        body { font-family: system-ui, sans-serif; text-align: center; padding: 100px 20px; background: #f9fafb; color: #111827; }
+        .card { max-width: 450px; margin: 0 auto; background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        h1 { color: #10b981; margin-bottom: 10px; }
+        p { color: #4b5563; font-size: 16px; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1 id="statusHeader">Processing Payment...</h1>
+        <p id="statusDesc">Communicating with your browser extension...</p>
+    </div>
 
+    <script>
+        // CRITICAL: Replace this string with your real generated Extension ID from chrome://extensions
+        const EXTENSION_ID = "your_actual_chrome_extension_id_here";
+
+        window.addEventListener('DOMContentLoaded', () => {
+            if (window.chrome && chrome.runtime) {
+                chrome.runtime.sendMessage(EXTENSION_ID, { action: "ACTIVATE_PREMIUM" }, (response) => {
+                    if (response && response.success) {
+                        document.getElementById('statusHeader').innerText = "🚀 Setup Complete!";
+                        document.getElementById('statusDesc').innerText = "Your premium license is active. You can close this tab and open the extension.";
+                    } else {
+                        document.getElementById('statusHeader').innerText = "Activation Error";
+                        document.getElementById('statusDesc').innerText = "Failed to sync status. Try reopening the extension popup.";
+                    }
+                });
+            } else {
+                document.getElementById('statusHeader').innerText = "Chrome Required";
+                document.getElementById('statusDesc').innerText = "Please open this verification link inside Google Chrome where the extension is active.";
+            }
+        });
+    </script>
+</body>
+</html>
